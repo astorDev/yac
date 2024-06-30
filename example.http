@@ -1,0 +1,49 @@
+# Assumes that the following settings are set in the settings.json file:
+# 
+# "httpyac.requestDefaultHeaders": {
+#     "Content-Type" : "application/json"
+# },
+
+@host=https://api.spacexdata.com/v4
+
+###
+GET /launches
+
+###
+# @name reusable 
+POST /launches/query
+
+{
+    "query" : {
+        "cores.landing_type" : "RTLS"
+    },
+    "options" : {
+        "select" : {
+            "date_utc" : 1,
+            "details" : 1,
+            "success" : 1,
+            "cores.core" : 1,
+            "cores.landing_attempt" : 1
+        }
+    }
+}
+
+###
+# @name cores
+# @ref reusable
+# @loop for doc of reusable.docs
+# @sleep 5000
+GET /cores/{{ doc.cores[0].core }}
+
+###
+# @ref cores
+GET /launches/{{ cores1.launches[1] }}
+
+###
+POST https://httpbin.org/post
+    ?guid={{ $guid }}
+    &learned=HttpYac is awesome
+    &datetime={{ $datetime iso8601 }}
+    &timestamp={{ $timestamp }}
+    &randomInt={{ $randomInt 1 100 }}
+    &environment={{ envName }}
