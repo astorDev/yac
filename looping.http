@@ -1,0 +1,16 @@
+{{
+    console.log('before')
+    exports.x = 'one';
+}}
+###
+# @loop for 4
+GET https://httpbin.org/anything?a={{ x }}
+
+{{
+    //console.log("sent " + response.body)
+    var rb = JSON.parse(response.body);
+    //console.log(rb);
+    var item = rb.args.a;
+    console.log(item);
+    x = item + "x"
+}}

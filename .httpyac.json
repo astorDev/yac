@@ -1,0 +1,13 @@
+{
+    "environments": {
+        "$shared" : {
+            "envName" : "not set"
+        },
+        "dev" : {
+            "envName" : "dev"
+        },
+        "prod" : {
+            "envName" : "prod"
+        }
+    }
+}
