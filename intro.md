@@ -22,11 +22,11 @@ I'll assume you have [VS Code](https://code.visualstudio.com/) installed. Now, l
 
 ![](example/v1/run.gif)
 
-Okay, that gave us a lot of information, regarding the SpaceX launches. Perhaps, the thing SpaceX is most famous for it's ability to land and reuse rockets. In the API they call such landing RTLS (Return To Launch Site). Let's get us 3 oldest launches with the landing type. Will limit our selection with `details`, `date_utc`, and `core`. Here's what the http file syntax will expect us to do:
+Okay, that gave us a lot of information, regarding the SpaceX launches. Perhaps, the thing SpaceX is most famous for is its ability to land and reuse rockets. In the API they call such landing RTLS (Return To Launch Site). Let's get us the 3 oldest launches with the landing type. Will limit our selection to `details`, `date_utc`, and `core`. Here's what the http file syntax will expect us to do:
 
 - Add an HTTP method name (`POST`) at the start, before a url.
 - Put headers as `Header: Value` below the first line
-- Put request body below the headers.
+- Put the request body below the headers.
 
 And here's what will get:
 
@@ -49,11 +49,11 @@ Content-Type: application/json
 }
 ```
 
-Sending the response give us response with 3 docs and just enough understanding of the basics of HttpYac.
+Sending the response gives us a response with 3 docs and just enough understanding of the basics of HttpYac.
 
 ## Now the Cool Part
 
-Let's now refactor the code a little. First thing you may notice is that we duplicated the base url (`https://api.spacexdata.com/v4`). Fortunately, HttpYac does provide a support for variables. We can use `@x = ...` to declare a variable and `{{ x }}` to put the variable in code. So, here's how we can refactor our code:
+Let's now refactor the code a little. The first thing you may notice is that we duplicated the base url (`https://api.spacexdata.com/v4`). Fortunately, HttpYac does provide support for variables. We can use `@x = ...` to declare a variable and `{{ x }}` to put the variable in a line. So, here's how we can refactor our code:
 
 ```http
 @baseUrl = https://api.spacexdata.com/v4
@@ -80,7 +80,7 @@ Content-Type: application/json
 
 Moreover, HttpYac does have one special variable, called `host`, that covers exactly this case and is prefixed for urls starting with `/` automatically. So we'll get an even tidier code:
 
-> HttpYac separated `regions` by 3 hashes `###`. Code above first section separator `###` considered global. In my experience HttpYac works the most stable when each request is in it's separate region. So we'll also use that.
+> HttpYac separated `regions` by 3 hashes `###`. A code above the first section separator `###` is considered global. In my experience, HttpYac works the most stable when each request is in its separate region. So we'll also add the hashes.
 
 ```http
 @host = https://api.spacexdata.com/v4
@@ -107,7 +107,7 @@ Content-Type: application/json
 }
 ```
 
-Next tedious part is the `Content-Type` header. You may imagine, than this header will be needed for almost all the APIs out there. Again, that's pretty easy to avoid duplication. We'll use VS Code settings for that:
+The next tedious part is the `Content-Type` header. You may imagine, that this header will be needed for almost all the APIs out there. Again, in this case, that's pretty easy to avoid duplication. We'll use VS Code settings for that:
 
 - In Command Palette `Cmd + Shift+ P` send command `Preferences: Open User Settings (JSON)`.
 - In the root document insert the block:
@@ -118,6 +118,7 @@ Next tedious part is the `Content-Type` header. You may imagine, than this heade
     },
 ```
 
+Here's how our file looks now:
 
 ```http
 @host = https://api.spacexdata.com/v4
@@ -145,7 +146,7 @@ POST /launches/query
 
 ## And Even Cooler
 
-Perhaps, the most common thing one need to do when using an API is to reuse values from one request in another. Gladly, HttpYac has a pretty easy support for it. Remember the launches information we get?
+Perhaps, the most common thing one needs to do when using an API is to reuse values from one request in another. Gladly, HttpYac has pretty easy support for it. Remember the launch information we get?
 
 ```json
 {
@@ -194,11 +195,11 @@ Perhaps, the most common thing one need to do when using an API is to reuse valu
 }
 ```
 
-Let's find out what happened to the the core from the first launch. We'll need to grab the core id and send a new request. Here's how we'll do it
+Let's find out what happened to the core from the first launch. We'll need to grab the core ID and send a new request. Here's how we'll do it
 
-- Name the launches request using `# @name reusable`. We'll call that request `reusable`.
+- Name the launch request using `# @name reusable`. We'll call that request `reusable`.
 - Reference the request in the next one `# @ref reusable`
-- Access value of field `core` of first `[0]` element in `cores` array from the first `[0]` element in `docs` property of the request response: `{{ reusable.docs[0].cores[0].core }}`
+- Access value of field `core` of first `[0]` element in `cores` array from the first `[0]` element in the `docs` property of the request-response: `{{ reusable.docs[0].cores[0].core }}`
 
 Here's what our requests file will look like after the changes:
 
@@ -231,7 +232,7 @@ POST /launches/query
 GET /cores/{{ reusable.docs[0].cores[0].core }}
 ```
 
-This what we'll get about the core after clicking the `send` button:
+This is what we'll get about the core after clicking the `send` button:
 
 ```json
 {
@@ -251,7 +252,7 @@ This what we'll get about the core after clicking the `send` button:
 }
 ```
 
-Hm, retired, this is boring. Let's check out another one? We can do something just a little bit nicer. The syntax we used for naming and referencing requests (`# @foo bar`) is used to create meta data in HttpYac. And there's quite a few built-in metadata handlers, including the one, called `@loop` and the one called `sleep`. So we'll:
+Hmm, retired, this is boring. Let's check out another one. We can do something just a little bit nicer. The syntax we used for naming and referencing requests (`# @foo bar`) is used to create metadata in HttpYac. And there are quite a few built-in metadata handlers, including the one, called `@loop` and the one called `sleep`. So we'll:
 
 - Loop `docs` returned in `reusable` request: `# @loop for doc of reusable.docs`
 - Freeze between the request for 2 seconds: `# @sleep 2000`
