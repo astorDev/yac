@@ -13,7 +13,14 @@ No, it's not Insomnia. In fact, this instrument is not even an app, it's just a 
 
 ## Getting Started
 
-I'll assume you have [VS Code](https://code.visualstudio.com/) installed. 
+I'll assume you have [VS Code](https://code.visualstudio.com/) installed. Now, let's go straight to requests. We'll use the [SpaceX API](https://github.com/r-spacex/SpaceX-API) for our experiments. Here's what will need to do, to get started:
+
+1. Install the [HttpYac Extension](https://marketplace.visualstudio.com/items?itemName=anweber.vscode-httpyac)
+2. Create a file `spacex.http`
+3. Put a single line with the api url `https://api.spacexdata.com/v4/launch`
+4. Click on the send button, which appears above the url.
+
+![](example/v1/run.gif)
 
 ## CLI
 
