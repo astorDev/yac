@@ -18,7 +18,7 @@ I'll assume you have [VS Code](https://code.visualstudio.com/) installed. Now, l
 1. Install the [HttpYac Extension](https://marketplace.visualstudio.com/items?itemName=anweber.vscode-httpyac)
 2. Create a file `spacex.http`
 3. Put a single line with the api url `https://api.spacexdata.com/v4/launch`
-4. Click on send button, appeared above the url.
+4. Click on the send button, which appears above the url.
 
 ![](example/v1/run.gif)
 
