@@ -1,7 +1,4 @@
 {
-    "defaultHeaders": {
-        "Content-Type": "application/json"
-    },
     "environments": {
         "$shared" : {
             "envName" : "not set"
