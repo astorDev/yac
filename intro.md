@@ -259,21 +259,12 @@ Hmm, retired, this is boring. Let's check out another one. We can do something j
 
 ![](example/v6/looping.gif)
 
-## CLI
-
-| Output    | Gives You                        |
-|-----------|----------------------------------|
-| short     | Method, Url -> Status, Elapsed   |
-| body      | Just Response Body               |
-| headers   | Request and Response Headers     |
-| response  | Response Headers and Body        |
-| exchange  | All Headers and Body             |
-| none      | Just how many requests processed |
-
 ## Wrapping Up
 
 Although we've seen a lot of cool things HttpYac can do, the article didn't cover a bunch of other features. For example, httpyac supports:
 
+- Environments
+- CLI tool
 - GraphQL
 - GRPC
 - RabbitMQ (yes, even this!)
