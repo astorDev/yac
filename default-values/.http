@@ -1,1 +1,1 @@
-GET https://httpbin.org/get?hello={{ name ?? "World" }}
+GET https://httpbin.org/get?hello={{ this.name ?? "World" }}
