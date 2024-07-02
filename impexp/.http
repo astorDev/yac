@@ -1,0 +1,38 @@
+@session = {{ $guid }}
+
+###
+# @name source
+GET http://httpbin.org/get
+    ?name=Joshual
+    &age=28
+
+{{
+    var fs = require('fs');
+    var args = JSON.parse(response.body).args
+    var content = JSON.stringify(args);
+    var path = "/tmp/yac-buffer-" + session + ".json"
+
+    fs.writeFileSync(path, content);
+    console.log('wrote \n' + content + '\n to: \n' + path)
+}}
+
+###
+# @forceRef source
+POST https://httpbin.org/anything
+
+<@ /tmp/yac-buffer-{{ session }}.json
+
+###
+# @forceRef source
+{{
+    var fs = require('fs');
+    var json = fs.readFileSync("/tmp/yac-buffer-" + session + ".json");
+    var templated = json.toString().replace("Joshual", "{{ name }}");
+    var filePath = "/tmp/yac-buffer-" + session + "-templated.json";
+    fs.writeFileSync(filePath, templated);
+    console.log('wrote templated request to the file. To see it in VS Code run in terminal:\n' + 'code ' + filePath)
+}}
+@name = George
+POST https://httpbin.org/anything
+
+<@ /tmp/yac-buffer-{{ session }}-templated.json
